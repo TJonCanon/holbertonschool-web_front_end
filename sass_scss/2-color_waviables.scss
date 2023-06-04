@@ -1,0 +1,17 @@
+$task-1-color: #3D3D3D;
+$task-2-background-color: #6D6D6D;
+
+
+
+body {
+    color: $task-1-color;
+    background-color: $task-2-background-color;
+}
+
+p {
+    color: $task-1-color;
+}
+
+h2 {
+    background-color: $task-2-background-color;
+}
