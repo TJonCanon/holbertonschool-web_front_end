@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Task 0</title>
+    <script
+      src="https://code.jquery.com/jquery-3.6.4.js"
+      integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E="
+      crossorigin="anonymous"
+    ></script>
+    <script type="application/javascript">
+
+      $(document).ready(() => {
+        createSearchForm();
+      });
+
+      const createSearchForm = () => {
+        $('body').append([
+          $('<input/>', { type: 'text', id: 'search' }),
+          $('<input/>', {
+            type: 'submit',
+            value: 'Submit',
+            on: {
+              click: () => {                queryWikipedia($('#search').val());
+              },
+            },
+          }),
+
+          $('<ul/>', { class: 'results' }),
+        ]);
+      };
+
+
+      const addNewArticle = (id, title, snippet) => {
+        $('ul').append(
+          $('<li/>').append([
+            $('<p/>').append([
+              $('<span/>', { text: `${id} - ` }),
+              $('<b/>', { text: `${title}` }),
+            ]),
+            $('<p/>', { html: `${snippet}` }),
+          ])
+        );
+      };
+
+
+      const queryWikipedia = (search) => {
+        $.ajax({
+          url: 'https://en.wikipedia.org/w/api.php' + '?origin=*',
+          data: {
+            action: 'query',
+            format: 'json',
+            list: 'search',
+            srsearch: search,
+          },
+          method: 'GET',
+          success: (json) => {
+
+            $('.results').replaceWith($('<ul/>', { class: 'results' }));
+            $.each(json.query.search, function (index, result) {
+
+              addNewArticle(result.pageid, result.title, result.snippet);
+            });
+          },
+          error: (xhr, status, errorThrown) => {
+
+            alert('Something went wrong!');
+            console.log(`Error: ${error}`);
+            console.log(`Status: ${status}`);
+            console.dir(xhr);
+          },
+        });
+      };
+    </script>
+  </head>
+
+  <body></body>
+</html>
